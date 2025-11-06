@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}View Data - Loan Eligibility Prediction{% endblock %}
+
+{% block content %}
+<div>
+    <h1 style="color: #007bff; text-align: center; margin-bottom: 30px;">Data View</h1>
+    
+    {% if columns and rows %}
+        <div style="overflow-x: auto; margin-bottom: 20px;">
+            <table style="width: 100%; border-collapse: collapse; background-color: white; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+                <thead>
+                    <tr style="background-color: #007bff; color: white;">
+                        {% for column in columns %}
+                            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">{{ column }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            {% for cell in row %}
+                                <td style="padding: 12px; border: 1px solid #ddd;">{{ cell }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <p style="color: #666;">Showing {{ rows|length }} rows of data</p>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 50px; background-color: #f8f9fa; border-radius: 10px;">
+            <h3 style="color: #666;">No data available</h3>
+            <p style="color: #999;">Please load data first to view it here.</p>
+            <a href="{% url 'load' %}" style="display: inline-block; background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 15px;">
+                Load Data
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

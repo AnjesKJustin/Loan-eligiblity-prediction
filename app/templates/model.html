@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Model Training - Loan Eligibility Prediction{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+    <h1 style="color: #007bff; text-align: center; margin-bottom: 30px;">Model Training</h1>
+    
+    {% if msg %}
+        <div style="background-color: #d1ecf1; color: #0c5460; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #bee5eb;">
+            {{ msg }}
+        </div>
+    {% endif %}
+    
+    <form method="POST" style="background-color: #f8f9fa; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 25px;">
+            <label for="algo" style="display: block; margin-bottom: 10px; font-weight: bold; color: #333;">Select Machine Learning Algorithm:</label>
+            <select id="algo" name="algo" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                <option value="">Choose an algorithm...</option>
+                <option value="0">Artificial Neural Network (ANN)</option>
+                <option value="1">XGBoost Classifier</option>
+                <option value="2">AdaBoost Classifier</option>
+                <option value="3">Random Forest Classifier</option>
+                <option value="4">Decision Tree Classifier</option>
+                <option value="5">K-Means Clustering</option>
+                <option value="6">K-Nearest Neighbors (KNN)</option>
+            </select>
+        </div>
+        
+        <button type="submit" style="width: 100%; background-color: #dc3545; color: white; padding: 12px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
+            Train Model
+        </button>
+    </form>
+    
+    <div style="margin-top: 30px; padding: 20px; background-color: #e9ecef; border-radius: 5px;">
+        <h4 style="color: #333; margin-top: 0;">Available Algorithms:</h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; color: #666;">
+            <div>
+                <strong>ANN:</strong> Deep learning approach
+            </div>
+            <div>
+                <strong>XGBoost:</strong> Gradient boosting
+            </div>
+            <div>
+                <strong>AdaBoost:</strong> Adaptive boosting
+            </div>
+            <div>
+                <strong>Random Forest:</strong> Ensemble method
+            </div>
+            <div>
+                <strong>Decision Tree:</strong> Tree-based classification
+            </div>
+            <div>
+                <strong>K-Means:</strong> Clustering algorithm
+            </div>
+            <div>
+                <strong>KNN:</strong> Instance-based learning
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
