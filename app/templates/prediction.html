@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Eligibility Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+        .form-section h3 {
+            margin-top: 0;
+            color: #555;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group input:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0,123,255,0.3);
+        }
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: 30px auto 0;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .result.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .result.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Loan Eligibility Prediction</h1>
+        
+        <form method="POST" action="">
+            {% csrf_token %}
+            
+            <!-- Loan Details Section -->
+            <div class="form-section">
+                <h3>Loan Details</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="term">Loan Term (in months):</label>
+                        <input type="number" id="term" name="term" required step="1" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="int_rate">Interest Rate (%):</label>
+                        <input type="number" id="int_rate" name="int_rate" required step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="installment">Monthly Installment ($):</label>
+                        <input type="number" id="installment" name="installment" required step="0.01" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Credit Information Section -->
+            <div class="form-section">
+                <h3>Credit Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="grade">Credit Grade:</label>
+                        <input type="text" id="grade" name="grade" required placeholder="e.g., A, B, C">
+                    </div>
+                    <div class="form-group">
+                        <label for="sub_grade">Sub Grade:</label>
+                        <input type="text" id="sub_grade" name="sub_grade" required placeholder="e.g., A1, B2">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="revol_bal">Revolving Balance ($):</label>
+                        <input type="number" id="revol_bal" name="revol_bal" required step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="total_acc">Total Accounts:</label>
+                        <input type="number" id="total_acc" name="total_acc" required step="1" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Income & Verification Section -->
+            <div class="form-section">
+                <h3>Income & Verification</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="annual_inc">Annual Income ($):</label>
+                        <input type="number" id="annual_inc" name="annual_inc" required step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="verification_status">Verification Status:</label>
+                        <input type="number" id="verification_status" name="verification_status" required step="1" min="0" max="2" placeholder="0=Not Verified, 1=Source Verified, 2=Verified">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Information Section -->
+            <div class="form-section">
+                <h3>Additional Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="title">Loan Title:</label>
+                        <input type="text" id="title" name="title" required placeholder="Brief description of loan purpose">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="mort_acc">Mortgage Accounts:</label>
+                        <input type="number" id="mort_acc" name="mort_acc" required step="1" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="pub_rec_bankruptcies">Public Record Bankruptcies:</label>
+                        <input type="number" id="pub_rec_bankruptcies" name="pub_rec_bankruptcies" required step="1" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Predict Loan Eligibility</button>
+        </form>
+
+        {% if msg %}
+        <div class="result {% if 'Fully Paid' in msg %}success{% else %}error{% endif %}">
+            {{ msg }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
